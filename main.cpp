@@ -19,10 +19,27 @@ void MainWindow::OnPaint(HDC hdc){
 
 void MainWindow::OnCommand(int id){
 	switch(id){
-		case ID_SIZE:
-			break;
+	case ID_SIZE:
+	{
+					
+
+					break;
+	}
 		case ID_COLOR:
-			break;
+		{
+						 COLORREF myCol = RGB(255, 128, 0);
+
+						 COLORREF custCols[16] = { 0 };
+						 CHOOSECOLOR cc;
+						 ZeroMemory(&cc, sizeof cc);
+						 cc.lStructSize = sizeof cc;
+						 cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+						 cc.lpCustColors = custCols;
+						 cc.rgbResult = myCol;
+						 if (ChooseColor(&cc))
+							 myCol = cc.rgbResult;
+						 break;
+		}
 		case ID_EXIT: 
 			DestroyWindow(*this); 
 			break;
