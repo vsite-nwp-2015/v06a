@@ -28,7 +28,7 @@ void MainWindow::OnCommand(int id){
 			break;
 	}
 }
-
+//quit
 void MainWindow::OnDestroy(){
 	::PostQuitMessage(0);
 }
