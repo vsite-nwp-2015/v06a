@@ -28,8 +28,19 @@ bool SizeDialog::OnOK(){
 
 
 void MainWindow::OnPaint(HDC hdc){
-
-
+	HBRUSH brush = CreateSolidBrush(bground);
+	SetMapMode(hdc, MM_ANISOTROPIC);
+	RECT rc;
+	GetClientRect(*this, &rc);
+	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
+	SetWindowExtEx(hdc, x, y, NULL);
+	for (int i = 0; i < x; ++i)
+		for (int j = 1; j < y; j+=2){
+			RECT r = { i, j, i + 1, j + 1 };
+			FillRect(hdc, &r, brush);
+		}
+		DeleteObject(brush);
+	
 }
 
 COLORREF GetColor(HWND parent, COLORREF cur){
@@ -61,6 +72,7 @@ void MainWindow::OnCommand(int id){
 	case ID_COLOR:
 	{
 		bground = GetColor(*this, bground);
+		InvalidateRect(*this, NULL, true);
 
 		break;
 		}
