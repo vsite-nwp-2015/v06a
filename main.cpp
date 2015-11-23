@@ -34,8 +34,9 @@ void MainWindow::OnPaint(HDC hdc){
 	GetClientRect(*this, &rc);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 	SetWindowExtEx(hdc, x, y, NULL);
+	int j;
 	for (int i = 0; i < x; ++i)
-		for (int j = 1; j < y; j+=2){
+		for ((i%2==0? j = 1 : j = 0); j < y; j+=2){
 			RECT r = { i, j, i + 1, j + 1 };
 			FillRect(hdc, &r, brush);
 		}
@@ -91,7 +92,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	Application app;
 	MainWindow wnd;	
-	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, "NWP", 
-		(int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)));	
+	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"),(int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)));	
 	return app.Run();
 }
