@@ -34,14 +34,12 @@ void MainWindow::OnPaint(HDC hdc){
 	GetClientRect(*this, &rc);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 	SetWindowExtEx(hdc, x, y, NULL);
-	int j;
 	for (int i = 0; i < x; ++i)
-		for ((i%2==0? j = 1 : j = 0); j < y; j+=2){
+		for (int j =(i%2 ? 1 : 0); j < y; j+=2){
 			RECT r = { i, j, i + 1, j + 1 };
 			FillRect(hdc, &r, brush);
 		}
 		DeleteObject(brush);
-	
 }
 
 COLORREF GetColor(HWND parent, COLORREF cur){
@@ -90,6 +88,10 @@ void MainWindow::OnDestroy(){
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
+	::x = 0;
+	::y = 0;
+	::bground = RGB(0, 0, 0);
+
 	Application app;
 	MainWindow wnd;	
 	wnd.Create(NULL, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"),(int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)));	
