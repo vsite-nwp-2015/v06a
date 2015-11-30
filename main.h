@@ -5,6 +5,8 @@
 
 class SizeDialog : public Dialog {
 protected:
+	int x;
+	int y;
 	int IDD();
 	bool OnInitDialog();
 	bool OnOK();
@@ -13,11 +15,12 @@ protected:
 class MainWindow : public Window {
 protected:
 	COLORREF color;
-	int x; 
+	int x;
 	int y;
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
 	void OnDestroy();
 public:
 	MainWindow();
+	
 };

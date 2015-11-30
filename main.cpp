@@ -1,31 +1,35 @@
 #include "main.h"
 #include "rc.h"
 
+MainWindow::MainWindow() { x = 8; y = 8; color = RGB(0, 0, 0); }
 
 int SizeDialog::IDD(){
 	return IDD_SIZE; 
 }
 
 bool SizeDialog::OnInitDialog(){
-
+	SetInt(IDC_EDIT1, x);
+	SetInt(IDC_EDIT2, y);
 	return true;
 }
 
 bool SizeDialog::OnOK(){
+	x = GetInt(IDC_EDIT1);
+	y = GetInt(IDC_EDIT2);
 	return true;
 }
 
-MainWindow::MainWindow() { x = 25; y = 25; color = RGB(0, 0, 0); }
 
 void MainWindow::OnPaint(HDC hdc){
 	HBRUSH brush = CreateSolidBrush(color);
+	SelectObject(hdc, brush);
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	RECT rekt;
 	GetClientRect(*this, &rekt);
 	SetViewportExtEx(hdc, rekt.right, rekt.bottom, NULL);
 	SetWindowExtEx(hdc, x, y, NULL);
 	for (int x1 = 0; x1 < x; ++x1){
-		for (int y1 = 0 ; y1 < y; y1+=2) {
+		for (int y1 = (x1 % 2 ? 1 : 0) ; y1 < y; y1+=2) {
 			RECT rect = { x1, y1, x1 + 1 , y1 + 1};
 			FillRect(hdc, &rect, brush);
 		}
