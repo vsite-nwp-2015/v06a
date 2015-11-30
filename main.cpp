@@ -1,8 +1,6 @@
 #include "main.h"
 #include "rc.h"
 
-int x, y;
-COLORREF bground;
 
 int SizeDialog::IDD(){
 	return IDD_SIZE; 
@@ -62,7 +60,11 @@ void MainWindow::OnCommand(int id){
 	case ID_SIZE:
 	{
 		SizeDialog dlg;
+		dlg.x = x;
+		dlg.y = y;
 		if (dlg.DoModal(0, *this) == IDOK){
+			x = dlg.x;
+			y = dlg.y;
 			InvalidateRect(*this, NULL, true);
 		}
 
@@ -86,11 +88,14 @@ void MainWindow::OnDestroy(){
 	::PostQuitMessage(0);
 }
 
+MainWindow::MainWindow(){
+	x = 2;
+	y = 2;
+	bground = RGB(0,0,0);
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
-	::x = 0;
-	::y = 0;
-	::bground = RGB(0, 0, 0);
 
 	Application app;
 	MainWindow wnd;	
