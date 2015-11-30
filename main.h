@@ -12,6 +12,7 @@ protected:
 
 class MainWindow : public Window {
 protected:
+	COLORREF color;
 	int x; 
 	int y;
 	void OnPaint(HDC hdc);

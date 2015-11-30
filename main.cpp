@@ -15,13 +15,22 @@ bool SizeDialog::OnOK(){
 	return true;
 }
 
-MainWindow::MainWindow() { x = 256; y = 256; }
+MainWindow::MainWindow() { x = 25; y = 25; color = RGB(0, 0, 0); }
 
 void MainWindow::OnPaint(HDC hdc){
-	for (int x1 = 0; x1 < x; x1++){
-		for (int y1 = 0; y1 < y; y1++)
-
+	HBRUSH brush = CreateSolidBrush(color);
+	SetMapMode(hdc, MM_ANISOTROPIC);
+	RECT rekt;
+	GetClientRect(*this, &rekt);
+	SetViewportExtEx(hdc, rekt.right, rekt.bottom, NULL);
+	SetWindowExtEx(hdc, x, y, NULL);
+	for (int x1 = 0; x1 < x; ++x1){
+		for (int y1 = 0 ; y1 < y; y1+=2) {
+			RECT rect = { x1, y1, x1 + 1 , y1 + 1};
+			FillRect(hdc, &rect, brush);
+		}
 	}
+	DeleteObject(brush);
 }
 
 void MainWindow::OnCommand(int id){
@@ -33,17 +42,17 @@ void MainWindow::OnCommand(int id){
 			break;
 		case ID_COLOR:
 		{
-			COLORREF myCol = RGB(255, 0, 0);
 			COLORREF custCols[16] = { 0 };
 			CHOOSECOLOR cc;
 			ZeroMemory(&cc, sizeof cc);
 			cc.lStructSize = sizeof cc;
 			cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 			cc.lpCustColors = custCols;
-			cc.rgbResult = myCol;
+			cc.rgbResult = color;
 			if (ChooseColor(&cc))
-				myCol = cc.rgbResult;
+				color = cc.rgbResult;
 		}
+		
 			break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
