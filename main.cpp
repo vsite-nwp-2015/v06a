@@ -28,9 +28,9 @@ void MainWindow::OnPaint(HDC hdc){
 	GetClientRect(*this, &rekt);
 	SetViewportExtEx(hdc, rekt.right, rekt.bottom, NULL);
 	SetWindowExtEx(hdc, x, y, NULL);
-	for (int x1 = 0; x1 < x; ++x1){
-		for (int y1 = (x1 % 2 ? 1 : 0) ; y1 < y; y1+=2) {
-			RECT rect = { x1, y1, x1 + 1 , y1 + 1};
+	for (int y1 = 0; y1 < x; ++y1){
+		for (int x1 = (y1 & 1) ; x1 < y; x1+=2) {
+			RECT rect = { y1, x1, y1 + 1 , x1 + 1};
 			FillRect(hdc, &rect, brush);
 		}
 	}
@@ -42,10 +42,12 @@ void MainWindow::OnCommand(int id){
 		case ID_SIZE:
 		{
 			SizeDialog sDlg;
+		
 		}
 			break;
 		case ID_COLOR:
 		{
+			//COLORREF col = GetColor(col);
 			COLORREF custCols[16] = { 0 };
 			CHOOSECOLOR cc;
 			ZeroMemory(&cc, sizeof cc);
@@ -56,7 +58,7 @@ void MainWindow::OnCommand(int id){
 			if (ChooseColor(&cc))
 				color = cc.rgbResult;
 		}
-		
+		InvalidateRect(*this, NULL, true);
 			break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
