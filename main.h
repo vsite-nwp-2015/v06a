@@ -4,9 +4,10 @@
 #include "nwpdlg.h"
 
 class SizeDialog : public Dialog {
-protected:
+public:
 	int x;
 	int y;
+protected:
 	int IDD();
 	bool OnInitDialog();
 	bool OnOK();

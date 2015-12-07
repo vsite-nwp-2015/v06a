@@ -42,12 +42,17 @@ void MainWindow::OnCommand(int id){
 		case ID_SIZE:
 		{
 			SizeDialog sDlg;
-		
+			sDlg.x = x;
+			sDlg.y = y;
+			if (sDlg.DoModal(0, *this) == IDOK) {
+				x = sDlg.x;
+				y = sDlg.y;
+				InvalidateRect(*this, NULL, true);
+			}
 		}
 			break;
 		case ID_COLOR:
 		{
-			//COLORREF col = GetColor(col);
 			COLORREF custCols[16] = { 0 };
 			CHOOSECOLOR cc;
 			ZeroMemory(&cc, sizeof cc);
