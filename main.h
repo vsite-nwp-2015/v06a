@@ -4,6 +4,8 @@
 #include "nwpdlg.h"
 
 class SizeDialog : public Dialog {
+public: 
+	int x, y;
 protected:
 	int IDD();
 	bool OnInitDialog();
@@ -11,6 +13,10 @@ protected:
 };
 
 class MainWindow : public Window {
+public:
+	int x, y;
+	bool bTropic;
+	COLORREF currentColor, customColors[16] = { 0 };
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

@@ -6,5 +6,5 @@
 #define IDD_SIZE     105
 #define IDC_EDIT1    106
 #define IDC_EDIT2    107
-
+#define ID_FILE_ANISOTROPIC  40001
 
