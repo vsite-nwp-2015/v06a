@@ -6,14 +6,20 @@ int SizeDialog::IDD(){
 }
 
 bool SizeDialog::OnInitDialog(){
-	SetInt(IDC_EDIT1, 0);
-	SetInt(IDC_EDIT2, 0);
+	SetInt(IDC_EDIT1, x);
+	SetInt(IDC_EDIT2, y);
 	return true;
 }
 
 bool SizeDialog::OnOK(){
-	x = GetInt(IDC_EDIT1);
-	y = GetInt(IDC_EDIT2);
+	try {
+		x = GetInt(IDC_EDIT1);
+		y = GetInt(IDC_EDIT2);
+	}
+	catch (XCtrl& e)
+	{
+		MessageBox(*this, "Upisi broj", "Not a number", MB_OK);
+	}
 	return true;
 }
 
@@ -26,8 +32,8 @@ void MainWindow::OnPaint(HDC hdc){
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 	SetWindowExtEx(hdc, x, y, NULL);
 
-	for (int i = 0; i<y; ++i) {
-		for (int j = i&1; j<x; j += 2) {
+	for (int i = 0; i < y; ++i) {
+		for (int j = i&1; j < x; j += 2) {
 			chessR = {j, i, j + 1, i + 1};
 			FillRect(hdc, &chessR, hbrush);
 		}
@@ -57,7 +63,7 @@ void MainWindow::OnCommand(int id){
 			cS.Flags = CC_FULLOPEN | CC_RGBINIT;
 			cS.hwndOwner = *this;
 			cS.lpCustColors = customColors;
-			cS.rgbResult = RGB(255, 0, 0);
+			cS.rgbResult = currentColor;
 			if (ChooseColor(&cS))
 				currentColor = cS.rgbResult;
 			InvalidateRect(*this, NULL, true);
@@ -72,7 +78,6 @@ void MainWindow::OnCommand(int id){
 		break;
 		case ID_EXIT: 
 			DestroyWindow(*this); 
-			break;
 	}
 }
 

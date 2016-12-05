@@ -17,6 +17,12 @@ public:
 	int x, y;
 	bool bTropic;
 	COLORREF currentColor, customColors[16] = { 0 };
+	MainWindow()
+	{
+		currentColor = RGB(123, 145, 134);
+		x = 5;
+		y = 5;
+	}
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
