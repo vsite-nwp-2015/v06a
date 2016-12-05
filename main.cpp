@@ -19,6 +19,7 @@ bool SizeDialog::OnOK(){
 	catch (XCtrl& e)
 	{
 		MessageBox(*this, "Upisi broj", "Not a number", MB_OK);
+		return false;
 	}
 	return true;
 }

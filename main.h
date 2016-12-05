@@ -19,6 +19,7 @@ public:
 	COLORREF currentColor, customColors[16] = { 0 };
 	MainWindow()
 	{
+		bTropic = true;
 		currentColor = RGB(123, 145, 134);
 		x = 5;
 		y = 5;
