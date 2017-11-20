@@ -8,6 +8,9 @@ protected:
 	int IDD();
 	bool OnInitDialog();
 	bool OnOK();
+public:
+	int x;
+	int y;
 };
 
 class MainWindow : public Window {
