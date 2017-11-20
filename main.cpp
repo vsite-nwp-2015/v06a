@@ -1,8 +1,6 @@
 #include "main.h"
 #include "rc.h"
-int x = 10;
-int y = 10;
-COLORREF color = RGB(0, 0, 0);
+
 int SizeDialog::IDD(){
 	return IDD_SIZE; 
 }
@@ -39,6 +37,7 @@ void MainWindow::OnPaint(HDC hdc){
 			FillRect(hdc, &r, brush);
 		}
 	}
+	DeleteObject(SelectObject(hdc, brush));
 }
 
 void MainWindow::OnCommand(int id){
