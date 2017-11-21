@@ -37,7 +37,7 @@ void MainWindow::OnPaint(HDC hdc){
 			FillRect(hdc, &r, brush);
 		}
 	}
-	DeleteObject(SelectObject(hdc, brush));
+	DeleteObject(brush);
 }
 
 void MainWindow::OnCommand(int id){
