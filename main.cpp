@@ -1,8 +1,6 @@
 #include "main.h"
 #include "rc.h"
 
-int x = 10; 
-int y = 10;
 COLORREF color = RGB(0, 0, 0);
 
 int SizeDialog::IDD(){
@@ -26,17 +24,16 @@ void MainWindow::OnPaint(HDC hdc){
 	HBRUSH brush = CreateSolidBrush(color);
 	RECT cr;
 	GetClientRect(*this, &cr);
-	POINT p;
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	SetViewportExtEx(hdc, cr.right, cr.bottom, 0);
-	SetWindowExtEx(hdc, x, y, 0);
-	
+	SetWindowExtEx(hdc, x, y, 0);	
 	for (int i = 0; i < x; ++i) {
 		for (int j = i&1; j < y; j += 2) {
 			RECT r = { i, j, i + 1, j + 1 };
 			FillRect(hdc, &r, brush);
 		}
 	}
+	DeleteObject(brush);
 }
 
 void MainWindow::OnCommand(int id){
