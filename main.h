@@ -21,4 +21,5 @@ protected:
 public:
 	int x = 10;
 	int y = 10;
+	COLORREF color = RGB(0, 0, 0);
 };

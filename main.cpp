@@ -1,8 +1,6 @@
 #include "main.h"
 #include "rc.h"
 
-COLORREF color = RGB(0, 0, 0);
-
 int SizeDialog::IDD(){
 	return IDD_SIZE; 
 }
