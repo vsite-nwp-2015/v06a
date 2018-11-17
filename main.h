@@ -15,7 +15,7 @@ protected:
 class MainWindow : public Window {
 public:
 	COLORREF color;
-	SizeDialog dlg;
+	int x, y;
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

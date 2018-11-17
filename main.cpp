@@ -43,9 +43,9 @@ void MainWindow::OnPaint(HDC hdc){
 	GetClientRect(*this, &rc);
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
-	SetWindowExtEx(hdc, dlg.x, dlg.y, NULL);
-	for (int i = 0; i < dlg.x; ++i) {
-		for (int j = (i & 1); j < dlg.y; j+=2) {
+	SetWindowExtEx(hdc, x, y, NULL);
+	for (int i = 0; i < x; ++i) {
+		for (int j = (i & 1); j < y; j+=2) {
 			RECT r = { i, j, i + 1, j + 1 };
 			FillRect(hdc, &r, brush);
 		}
@@ -55,12 +55,13 @@ void MainWindow::OnPaint(HDC hdc){
 }
 
 void MainWindow::OnCommand(int id){
+	SizeDialog dlg;
 	switch(id){
 		case ID_SIZE:
 			if (dlg.DoModal(0, *this) == IDOK) {
-				
+				x = dlg.x;
+				y = dlg.y;
 				InvalidateRect(*this, NULL, true);
-
 			}
 			break;
 		case ID_COLOR:
