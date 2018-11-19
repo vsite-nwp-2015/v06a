@@ -5,13 +5,11 @@
 
 class SizeDialog : public Dialog {
 private:
-	int x;
-	int y;
+	POINT paramsXY;
 public:
-	SizeDialog(int x, int y) 
-		: x(x),y(y) {}
-	int GetX() const { return x; }
-	int GetY() const { return y; }
+	SizeDialog(POINT params) 
+		: paramsXY(params) {}
+	POINT GetParamsXY() const { return paramsXY; }
 protected:
 	int IDD();
 	bool OnInitDialog();
@@ -21,11 +19,11 @@ protected:
 class MainWindow : public Window {
 private:
 	COLORREF color;
-	int x;
-	int y;
+	POINT params;
 public:
 	MainWindow() 
-		: x(0), y(0), color(RGB(0,0,125)){}
+		: params(), color(RGB(0,0,125))
+	{}
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

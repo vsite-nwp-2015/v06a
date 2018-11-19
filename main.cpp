@@ -6,15 +6,19 @@ int SizeDialog::IDD(){
 }
 
 bool SizeDialog::OnInitDialog(){
-	SetInt(IDC_EDIT1,x);
-	SetInt(IDC_EDIT2,y);
+	SetInt(IDC_EDIT1,paramsXY.x);
+	SetInt(IDC_EDIT2,paramsXY.y);
 	return true;
 }
 
 bool SizeDialog::OnOK(){
 	try {
-		x = GetInt(IDC_EDIT1);
-		y = GetInt(IDC_EDIT2);
+		paramsXY.x = GetInt(IDC_EDIT1);
+		paramsXY.y = GetInt(IDC_EDIT2);
+		if (paramsXY.x < 0 || paramsXY.y < 0) {
+			MessageBox(*this, "The value must be greater than zero!", "Size", MB_OK);
+			return false;
+		}
 	} catch (XCtrl&) {
 		MessageBox(*this, "Wrong entry!", "Size", MB_OK);
 		return false;
@@ -22,9 +26,8 @@ bool SizeDialog::OnOK(){
 	return true;
 }
 
-void CreateRect(int i, int j, const HDC hdc, const HBRUSH brush) {
-	RECT r = { i, j, i + 1, j + 1 };
-	FillRect(hdc, &r, brush);
+RECT CreateRect(int i, int j) {
+	return { i, j, i + 1, j + 1 };
 }
 
 void MainWindow::OnPaint(HDC hdc){
@@ -33,11 +36,11 @@ void MainWindow::OnPaint(HDC hdc){
 	GetClientRect(*this, &rc);
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
-	SetWindowExtEx(hdc, x, y, NULL);
+	SetWindowExtEx(hdc, params.x, params.y, NULL);
 	
-	for (int i = 0; i < x; ++i) {
-		for (int j = (i & 1); j < y; j += 2) {
-			CreateRect(i, j, hdc, brush);
+	for (int i = 0; i < params.x; ++i) {
+		for (int j = (i & 1); j < params.y; j += 2) {
+			FillRect(hdc, &CreateRect(i, j), brush);
 		}
 	}
 
@@ -58,15 +61,14 @@ COLORREF GetColor(HWND parent, COLORREF cur) {
 	return cur;
 }
 
-void SaveParameters(int& xCordinate, int& yCordinate, const SizeDialog& sizeDialog) {
-	xCordinate = sizeDialog.GetX();
-	yCordinate = sizeDialog.GetY();
+POINT GetParameters(const SizeDialog& sizeDialog) {
+	return sizeDialog.GetParamsXY();
 }
 
-void OpenSizeDialog(int& xValue, int& yValue, const HWND parent) {
-	SizeDialog sizeDialog(xValue, yValue);
+void OpenSizeDialog(POINT& params, const HWND parent) {
+	SizeDialog sizeDialog(params);
 	if (sizeDialog.DoModal(0, parent) == IDOK) {
-		SaveParameters(xValue, yValue, sizeDialog);
+		params = GetParameters(sizeDialog);
 		InvalidateRect(parent, 0, true);
 	}
 }
@@ -74,15 +76,15 @@ void OpenSizeDialog(int& xValue, int& yValue, const HWND parent) {
 void MainWindow::OnCommand(int id){
 	switch(id){
 	case ID_SIZE:
-		OpenSizeDialog(x, y, *this);
+		OpenSizeDialog(params, *this);
 		break;
 	case ID_COLOR: 
 		color = GetColor(*this, color);
 		InvalidateRect(*this, NULL, true);
 		break;
 	case ID_EXIT: 
-			DestroyWindow(*this); 
-			break;
+		DestroyWindow(*this); 
+		break;
 	}
 }
 
