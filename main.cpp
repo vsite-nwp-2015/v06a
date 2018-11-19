@@ -1,5 +1,6 @@
 #include "main.h"
 #include "rc.h"
+#include "brush.h"
 
 int SizeDialog::IDD(){
 	return IDD_SIZE; 
@@ -11,19 +12,29 @@ bool SizeDialog::OnInitDialog(){
 	return true;
 }
 
-bool SizeDialog::OnOK(){
+void HandleError(HWND hwnd, int ctrlID, std::string message) {
+	SetFocus(GetDlgItem(hwnd, ctrlID));
+	SendDlgItemMessage(hwnd, ctrlID, EM_SETSEL, 0, -1);
+	MessageBox(hwnd, message.c_str(), "Size", MB_OK);
+}
+
+bool SizeDialog::CheckInput(long& ref, int ctrlID) {
 	try {
-		paramsXY.x = GetInt(IDC_EDIT1);
-		paramsXY.y = GetInt(IDC_EDIT2);
-		if (paramsXY.x < 0 || paramsXY.y < 0) {
-			MessageBox(*this, "The value must be greater than zero!", "Size", MB_OK);
+		ref = GetInt(ctrlID);
+		if (ref < 0) {
+			HandleError(*this, ctrlID, "Negative number!");
 			return false;
-		}
-	} catch (XCtrl&) {
-		MessageBox(*this, "Wrong entry!", "Size", MB_OK);
+		}		
+	}
+	catch (XCtrl&) {
+		HandleError(*this, ctrlID, "Not a number!");
 		return false;
 	}
 	return true;
+}
+
+bool SizeDialog::OnOK(){
+	return CheckInput(paramsXY.x, IDC_EDIT1) && CheckInput(paramsXY.y, IDC_EDIT2);
 }
 
 RECT CreateRect(int i, int j) {
@@ -31,20 +42,21 @@ RECT CreateRect(int i, int j) {
 }
 
 void MainWindow::OnPaint(HDC hdc){
-	HBRUSH brush = CreateSolidBrush(color);
 	RECT rc;
 	GetClientRect(*this, &rc);
 	SetMapMode(hdc, MM_ANISOTROPIC);
 	SetViewportExtEx(hdc, rc.right, rc.bottom, NULL);
 	SetWindowExtEx(hdc, params.x, params.y, NULL);
 	
-	for (int i = 0; i < params.x; ++i) {
-		for (int j = (i & 1); j < params.y; j += 2) {
-			FillRect(hdc, &CreateRect(i, j), brush);
+	{
+		Brush brush(color);
+		for (int i = 0; i < params.x; ++i) {
+			for (int j = (i & 1); j < params.y; j += 2) {
+				FillRect(hdc, &CreateRect(i, j), brush);
+			}
 		}
 	}
 
-	DeleteObject(brush);
 }
 
 COLORREF GetColor(HWND parent, COLORREF cur) {
@@ -61,14 +73,10 @@ COLORREF GetColor(HWND parent, COLORREF cur) {
 	return cur;
 }
 
-POINT GetParameters(const SizeDialog& sizeDialog) {
-	return sizeDialog.GetParamsXY();
-}
-
 void OpenSizeDialog(POINT& params, const HWND parent) {
 	SizeDialog sizeDialog(params);
 	if (sizeDialog.DoModal(0, parent) == IDOK) {
-		params = GetParameters(sizeDialog);
+		params = sizeDialog.GetParamsXY();
 		InvalidateRect(parent, 0, true);
 	}
 }

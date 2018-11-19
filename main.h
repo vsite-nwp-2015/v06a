@@ -14,6 +14,7 @@ protected:
 	int IDD();
 	bool OnInitDialog();
 	bool OnOK();
+	bool CheckInput(long& ref, int ctrlID);
 };
 
 class MainWindow : public Window {
@@ -22,7 +23,7 @@ private:
 	POINT params;
 public:
 	MainWindow() 
-		: params(), color(RGB(0,0,125))
+		: params({10,10}), color(RGB(0, 0, 125))
 	{}
 protected:
 	void OnPaint(HDC hdc);
