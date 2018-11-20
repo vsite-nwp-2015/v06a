@@ -5,7 +5,7 @@
 
 class SizeDialog : public Dialog {
 public:
-	int x=0, y=0;
+	int x, y;
 protected:
 	int IDD();
 	bool OnInitDialog();
@@ -14,8 +14,8 @@ protected:
 
 class MainWindow : public Window {
 public:
-	COLORREF color;
-	int x, y;
+	COLORREF color=RGB(0,0,0);
+	int x=0, y=0;
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
