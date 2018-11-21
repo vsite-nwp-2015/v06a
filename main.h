@@ -15,7 +15,7 @@ protected:
 class MainWindow : public Window {
 public:
 	COLORREF color=RGB(0,0,0);
-	int x=0, y=0;
+	int x=8, y=8;
 protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);

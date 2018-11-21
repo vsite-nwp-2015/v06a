@@ -1,6 +1,5 @@
 #include "main.h"
 #include "rc.h"
-#include <cmath>
 
 COLORREF GetColor(HWND parent, COLORREF cur) {
 	COLORREF custCols[16] = { 0 };
@@ -28,8 +27,8 @@ bool SizeDialog::OnInitDialog(){
 
 bool SizeDialog::OnOK(){
 	try {
-		x = abs(GetInt(IDC_EDIT1));
-		y = abs(GetInt(IDC_EDIT2));
+		x = GetInt(IDC_EDIT1);
+		y = GetInt(IDC_EDIT2);
 	}
 	catch (XCtrl&) {
 		return false;
@@ -62,9 +61,15 @@ void MainWindow::OnCommand(int id){
 	switch(id){
 		case ID_SIZE:
 			if (dlg.DoModal(0, *this) == IDOK) {
-				x = dlg.x;
-				y = dlg.y;
-				InvalidateRect(*this, NULL, true);
+				if (dlg.x < 0 || dlg.y < 0) {
+					MessageBox(*this,"Please enter positive number","Warning",MB_OK | MB_ICONWARNING);
+				}
+				else {
+					x = dlg.x;
+					y = dlg.y;
+					InvalidateRect(*this, NULL, true);
+				}
+				
 			}
 			break;
 		case ID_COLOR:
