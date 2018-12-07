@@ -2,27 +2,119 @@
 #include "rc.h"
 
 int SizeDialog::IDD(){
+	
 	return IDD_SIZE; 
 }
 
 bool SizeDialog::OnInitDialog(){
+	
+	SetInt(IDC_EDIT1, x);
+	SetInt(IDC_EDIT2, y);
+
 	return true;
 }
 
 bool SizeDialog::OnOK(){
-	return true;
+	try {
+		x = GetInt(IDC_EDIT1);
+		y = GetInt(IDC_EDIT2);
+		
+		if (x <= 0 || y <= 0) throw("Unesite pozitivan broj");
+		return true;
+	}
+	catch (char* str)
+	{
+		
+		SendDlgItemMessage(*this, IDC_EDIT1, EM_SETSEL, 0, -1);
+		SetFocus(GetDlgItem(*this, IDC_EDIT1));
+		MessageBox(*this, str, "upozorenje", MB_OK| MB_ICONEXCLAMATION);
+		
+	}
+	catch (XCtrl&) {
+		SendDlgItemMessage(*this, IDC_EDIT1, EM_SETSEL, 0, -1);
+		SetFocus(GetDlgItem(*this, IDC_EDIT1));
+		MessageBox(*this, "Nije broj \n"  "Unesite broj", "upozorenje",MB_OK| MB_ICONEXCLAMATION);
+	}
+	return false;
+	
 }
 
 
-void MainWindow::OnPaint(HDC hdc){
+COLORREF GetColor(HWND parent, COLORREF cur) {
+	COLORREF custCols[16] = { 0 };
+	CHOOSECOLOR cc;
+	ZeroMemory(&cc, sizeof cc);
+	cc.lStructSize = sizeof cc;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+	
+	cc.hwndOwner = parent;
+	cc.lpCustColors = custCols;
+	cc.rgbResult = cur;
+	if (ChooseColor(&cc)) {
+		
+		cur = cc.rgbResult;
+		
+	}
+	InvalidateRect(parent, NULL, true);
+	return cur;
 }
+
+void MainWindow::OnPaint(HDC hdc) {
+	
+	RECT rec;
+	
+	HBRUSH hbrush = CreateSolidBrush(col);
+	HGDIOBJ obj=SelectObject(hdc,hbrush);
+
+	SelectObject(hdc, obj);
+	   	
+	if (GetClientRect(*this, &rec)) {
+		Rectangle(hdc, rec.left, rec.top, rec.right, rec.bottom);
+	
+	}
+		double sirina = static_cast<double>( rec.right)/brojStupac;
+		double visina =  static_cast<double>(rec.bottom)/brojRed;
+		
+		for (int i = 0; i <= brojRed; ++i) {
+			for (int j = 1; j <= brojStupac; j++) {
+				FrameRect(hdc, &rec, hbrush);
+		
+				rec.left = sirina * (j - 1);
+				rec.top = visina * i;
+ 				rec.right = sirina * j;
+				rec.bottom = visina * (i + 1);
+			
+				Rectangle(hdc, rec.left, rec.top, rec.right, rec.bottom);
+				
+				if ((j -1- i) % 2 == 0) {
+					FillRect(hdc, &rec, hbrush);
+				}
+			}
+	}
+		DeleteObject(hbrush);
+}
+
 
 void MainWindow::OnCommand(int id){
+	
+	SizeDialog size;
 	switch(id){
+		
 		case ID_SIZE:
+			size.x = brojRed;
+			size.y = brojStupac;
+				if (size.DoModal(0, *this) == IDOK) {
+					brojRed = size.x;
+					brojStupac = size.y;
+				}
+						
+			InvalidateRect(*this, 0, true);
 			break;
+		
 		case ID_COLOR:
+			col = GetColor(*this, col);
 			break;
+		
 		case ID_EXIT: 
 			DestroyWindow(*this); 
 			break;
