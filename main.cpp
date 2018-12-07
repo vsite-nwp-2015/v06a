@@ -66,26 +66,21 @@ void MainWindow::OnPaint(HDC hdc) {
 	HBRUSH hbrush = CreateSolidBrush(col);
 	HGDIOBJ obj=SelectObject(hdc,hbrush);
 
-	SelectObject(hdc, obj);
 	   	
-	if (GetClientRect(*this, &rec)) {
-		Rectangle(hdc, rec.left, rec.top, rec.right, rec.bottom);
+	GetClientRect(*this, &rec);
 	
-	}
+	
 		double sirina = static_cast<double>( rec.right)/brojStupac;
 		double visina =  static_cast<double>(rec.bottom)/brojRed;
 		
 		for (int i = 0; i <= brojRed; ++i) {
 			for (int j = 1; j <= brojStupac; j++) {
-				FrameRect(hdc, &rec, hbrush);
 		
 				rec.left = sirina * (j - 1);
 				rec.top = visina * i;
  				rec.right = sirina * j;
 				rec.bottom = visina * (i + 1);
 			
-				Rectangle(hdc, rec.left, rec.top, rec.right, rec.bottom);
-				
 				if ((j -1- i) % 2 == 0) {
 					FillRect(hdc, &rec, hbrush);
 				}
