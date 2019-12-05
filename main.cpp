@@ -12,8 +12,13 @@ bool SizeDialog::OnInitDialog(){
 }
 
 bool SizeDialog::OnOK(){
-	x = GetInt(IDC_EDIT1);
-	y = GetInt(IDC_EDIT2);
+	try {
+		x = GetInt(IDC_EDIT1);
+		y = GetInt(IDC_EDIT2);
+	}
+	catch (XCtrl&) {
+		return false;
+	}
 	return true;
 }
 
@@ -54,7 +59,7 @@ void MainWindow::OnCommand(int id){
 			break;
 		}
 		case ID_COLOR:
-		{	COLORREF boja2[100] = { 10,20,30,40,50,60,70,80,90,100,110,120,130,140,150,160 };
+		{	COLORREF boja2[100] = { 0 };
 			CHOOSECOLOR odabir_boje;
 			ZeroMemory(&odabir_boje, sizeof odabir_boje);
 			odabir_boje.rgbResult = boja;
