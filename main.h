@@ -19,7 +19,7 @@ protected:
 	void OnCommand(int id);
 	void OnDestroy();
 public:
-	COLORREF c = RGB(240, 230, 140);
+	COLORREF c = RGB(240, 40, 240);
 	int x = 10;
 	int y = 10;
 
