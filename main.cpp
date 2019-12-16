@@ -12,12 +12,16 @@ bool SizeDialog::OnInitDialog(){
 }
 
 bool SizeDialog::OnOK(){
-
-	x = GetInt(IDC_EDIT1);
-	y = GetInt(IDC_EDIT2);
+	try {
+		x = GetInt(IDC_EDIT1);
+		y = GetInt(IDC_EDIT2);
+	}
+	catch (XCtrl & ex) {
+		MessageBox(*this, "Unesite broj", "NaN", MB_OK);
+		return false;
+	}
 	return true;
 }
-
 
 void MainWindow::OnPaint(HDC hdc){
 	RECT rect;
