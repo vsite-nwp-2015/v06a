@@ -47,7 +47,7 @@ void MainWindow::OnPaint(HDC hdc){
 			RECT r = { i,j,i + 1,j + 1 };
 			FillRect(hdc, &r, brush);
 		}
-	//DeleteObject(brush);
+	DeleteObject(brush);
 }
 
 void OpenSizeDialog(POINT& params, const HWND parent) {
