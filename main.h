@@ -18,6 +18,8 @@ protected:
 	void OnPaint(HDC hdc);
 	void OnCommand(int id);
 	void OnDestroy();
+	void PromjeniVelicinuEkrana(MainWindow h);
+	void PromjeniBoju(MainWindow h);
 public:
 	COLORREF c = RGB(240, 40, 240);
 	int x = 10;

@@ -46,35 +46,45 @@ void MainWindow::OnPaint(HDC hdc)
 	DeleteObject(brush);
 }
 
+void MainWindow::PromjeniVelicinuEkrana(MainWindow h)
+{
+	SizeDialog nbr;
+	nbr.x = x;
+	nbr.y = y;
+	if (nbr.DoModal(0, h) == IDOK) {
+		x = nbr.x;
+		y = nbr.y;
+		InvalidateRect(h, NULL, true);
+
+	}
+}
+
+void MainWindow::PromjeniBoju(MainWindow h)
+{
+	COLORREF custCols[16] = { 0 };
+	CHOOSECOLOR cc;
+	ZeroMemory(&cc, sizeof cc);
+	cc.lStructSize = sizeof cc;
+	cc.Flags = CC_FULLOPEN | CC_RGBINIT;
+	cc.hwndOwner = *this;
+	cc.lpCustColors = custCols;
+	cc.rgbResult = c;
+	if (ChooseColor(&cc)) {
+		c = cc.rgbResult;
+		InvalidateRect(*this, NULL, true);
+	}
+}
+
 void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_SIZE:
 	{
-		SizeDialog nbr;
-		nbr.x = x;
-		nbr.y = y;
-		if (nbr.DoModal(0, *this) == IDOK) {
-			x = nbr.x;
-			y = nbr.y;
-			InvalidateRect(*this, NULL, true);
-
-		}
+		PromjeniVelicinuEkrana(*this);
 		break;
 	}
 	case ID_COLOR:
 	{
-		COLORREF custCols[16] = { 0 };
-		CHOOSECOLOR cc;
-		ZeroMemory(&cc, sizeof cc);
-		cc.lStructSize = sizeof cc;
-		cc.Flags = CC_FULLOPEN | CC_RGBINIT;
-		cc.hwndOwner = *this;
-		cc.lpCustColors = custCols;
-		cc.rgbResult = c;
-		if (ChooseColor(&cc)) {
-			c = cc.rgbResult;
-			InvalidateRect(*this, NULL, true);
-		}
+		PromjeniBoju(*this);
 		break;
 	}
 	case ID_EXIT:
@@ -82,6 +92,8 @@ void MainWindow::OnCommand(int id) {
 		break;
 	}
 }
+
+
 
 void MainWindow::OnDestroy() {
 	::PostQuitMessage(0);
