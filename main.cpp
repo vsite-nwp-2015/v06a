@@ -46,20 +46,21 @@ void MainWindow::OnPaint(HDC hdc)
 	DeleteObject(brush);
 }
 
-void MainWindow::PromjeniVelicinuEkrana(MainWindow h)
+void MainWindow::PromjeniVelicinuEkrana()
 {
 	SizeDialog nbr;
 	nbr.x = x;
 	nbr.y = y;
-	if (nbr.DoModal(0, h) == IDOK) {
+	if (nbr.DoModal(0, *this) == IDOK) {
 		x = nbr.x;
 		y = nbr.y;
-		InvalidateRect(h, NULL, true);
+		InvalidateRect(*this, NULL, true);
 
 	}
 }
 
-void MainWindow::PromjeniBoju(MainWindow h)
+
+void MainWindow::PromjeniBoju()
 {
 	COLORREF custCols[16] = { 0 };
 	CHOOSECOLOR cc;
@@ -79,12 +80,12 @@ void MainWindow::OnCommand(int id) {
 	switch (id) {
 	case ID_SIZE:
 	{
-		PromjeniVelicinuEkrana(*this);
+		PromjeniVelicinuEkrana();
 		break;
 	}
 	case ID_COLOR:
 	{
-		PromjeniBoju(*this);
+		PromjeniBoju();
 		break;
 	}
 	case ID_EXIT:
