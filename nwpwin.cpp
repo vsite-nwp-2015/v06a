@@ -55,7 +55,7 @@ bool window::create(HWND parent, DWORD style, LPCTSTR caption, int IdOrMenu,
 	tstring cn = class_name();
 	if (cn.empty())
 		register_class(cn = generate_class_name());
-	hw = ::CreateWindow(cn.c_str(), caption, style, x, y, width, height, parent, (HMENU)IdOrMenu, 0, this);
+	hw = ::CreateWindow(cn.c_str(), caption, style, x, y, 500, 500, parent, (HMENU)IdOrMenu, 0, this);
 	return hw != 0;
 }
 
