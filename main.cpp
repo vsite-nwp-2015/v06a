@@ -63,6 +63,7 @@ void main_window::on_command(int id){
 			cc.Flags = CC_FULLOPEN | CC_RGBINIT;
 			cc.lpCustColors = custCols;
 			cc.rgbResult = myCol;
+			cc.hwndOwner = *this;
 			if (ChooseColor(&cc))
 			{
 				myCol = cc.rgbResult;
@@ -85,6 +86,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hp, LPSTR cmdLine, int nShow)
 {
 	vsite::nwp::application app;
 	main_window wnd;	
-	wnd.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"), (int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)));	
+	wnd.create(0, WS_OVERLAPPEDWINDOW | WS_VISIBLE, _T("NWP"), (int)LoadMenu(hInstance, MAKEINTRESOURCE(IDM_MAIN)), CW_USEDEFAULT, CW_USEDEFAULT, 500, 500);
 	return app.run();
 }
