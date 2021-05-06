@@ -35,8 +35,8 @@ void main_window::on_paint(HDC hdc) {
 	SetViewportExtEx(hdc, rec.right, rec.bottom, NULL);
 	SetWindowExtEx(hdc, parametri.x, parametri.y, NULL);
 
-	for (int i = 0; i < parametri.x; ++i) {
-		for (int j = i % 2; j < parametri.y; j += 2) {
+	for (int i = 0; i < parametri.y; ++i) {
+		for (int j = i % 2; j < parametri.x; j += 2) {
 			RECT rec2 = { j, i, j + 1, i + 1 };
 			//Rectangle(hdc, j, i, j + 1, i + 1);
 			FillRect(hdc, &rec2, cetka);
